@@ -867,14 +867,18 @@ public class BranchSDK extends CordovaPlugin {
                     this._callbackContext.success(referringParams);
                 }
             } else {
-                JSONObject message = new JSONObject();
-                try {
-                    message.put("error", error.getMessage());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (this._callbackContext != null) {
-                    this._callbackContext.error(message);
+                if (error.getErrorCode() == BranchError.ERR_BRANCH_ALREADY_INITIALIZED) {
+                    getLatestReferringParams(this._callbackContext);
+                } else {
+                    JSONObject message = new JSONObject();
+                    try {
+                        message.put("error", error.getMessage());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    if (this._callbackContext != null) {
+                        this._callbackContext.error(message);
+                    }
                 }
             }
 
